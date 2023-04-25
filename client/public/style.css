@@ -1,0 +1,7 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("https://pbs.twimg.com/media/ElX-dLqWMAE1GIo?format=jpg&name=large");
+  background-size: cover;
+  background-attachment: fixed;
+}
