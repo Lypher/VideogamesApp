@@ -17,11 +17,12 @@ const Cards = ({ games }) => {
   const [orderAlf, setOrderAlf] = useState("");
   const [orderRtg, setOrderRtg] = useState("");
   const [origin, setOrigin] = useState("");
+  const [currentPage, setCurrentPage] = useState(page);
   const genres = useSelector((state) => state.genres);
 
   const handlePage = (event) => {
     setPage(event.target.value * 15);
-
+    setCurrentPage(event.target.value * 1);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -30,6 +31,9 @@ const Cards = ({ games }) => {
 
   const handlePagePrev = () => {
     setPage(page - 15);
+    setCurrentPage(currentPage - 1);
+    console.log(page);
+    console.log(currentPage);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -37,6 +41,7 @@ const Cards = ({ games }) => {
   };
   const handlePageNext = () => {
     setPage(page + 15);
+    setCurrentPage(currentPage + 1);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -48,6 +53,7 @@ const Cards = ({ games }) => {
   };
   const handleFilterByOrg = (event) => {
     setOrigin(event.target.value);
+    page > 0 && setPage(0);
   };
   const handleOrderAlf = (event) => {
     setOrderAlf(event.target.value);
@@ -76,7 +82,7 @@ const Cards = ({ games }) => {
   if (origin === "all") {
     allGames = games;
     setOrigin("");
-    if (!genre.length) setGenre("");
+    setGenre("");
   }
 
   for (let i = 1; i <= Math.ceil(allGames.length / 15); i++) {
@@ -158,7 +164,12 @@ const Cards = ({ games }) => {
       <div className="pagination">
         {page > 0 && <button onClick={handlePagePrev}>&lArr;</button>}
         {buttons.map((button, i) => (
-          <button value={i} onClick={handlePage} key={i}>
+          <button
+            value={i}
+            onClick={handlePage}
+            className={currentPage === i ? "active" : ""}
+            key={i}
+          >
             {button}
           </button>
         ))}
@@ -181,6 +192,11 @@ const StyledContainer = styled.div`
   padding-right: 5px;
   justify-content: space-around;
   min-height: 100vh;
+
+  .active {
+    text-decoration: underline;
+    font-weight: bold;
+  }
 
   .cards {
     display: flex;
@@ -211,7 +227,6 @@ const StyledContainer = styled.div`
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 4 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 5L0 0h4l-2 5z'/%3E%3C/svg%3E");
     background-position: right 0.5rem center;
     background-repeat: no-repeat;
     background-size: 8px 10px;

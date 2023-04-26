@@ -77,8 +77,17 @@ const CreateForm = () => {
     !game.image.length && delete game.image;
     dispatch(getAllGames());
     const newGame = await axios.post(`${url}/videogames`, game);
-    alert("Tu juego ha sido creado");
+    alert("Tu juego ha sido creado con exito!");
     window.scrollTo(0, 0);
+    setGameData({
+      name: "",
+      description: "",
+      released: "",
+      image: "",
+      rating: "",
+      platforms: "",
+      genres: [],
+    });
     return newGame;
   };
   return (
