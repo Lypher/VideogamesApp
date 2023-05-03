@@ -1,9 +1,15 @@
-import { GET_ALLGAMES, GET_GAMESBYNAME, GET_GENRES } from "./actions";
+import {
+  GET_ALLGAMES,
+  GET_GAMESBYNAME,
+  GET_GENRES,
+  UPDATE_LANGUAGE,
+} from "./actions";
 
 const initialState = {
   allGames: [],
   gamesByName: [],
   genres: [],
+  idioma: "en",
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +28,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         genres: action.payload,
+      };
+    case UPDATE_LANGUAGE:
+      return {
+        ...state,
+        idioma: action.payload.language,
       };
     default:
       return {

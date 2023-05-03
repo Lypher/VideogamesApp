@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Card = ({ game }) => {
+  const idioma = useSelector((state) => state.idioma);
   return (
     <Link style={{ textDecoration: "none" }} to={`/detail/${game.id}`}>
       <StyledCard
@@ -9,7 +11,9 @@ const Card = ({ game }) => {
           game.background_image ? game.background_image : game.image
         }
       >
-        <h2>Genres: {game.genres}</h2>
+        <h2>
+          {idioma === "es" ? "Generos:" : "Genres:"} {game.genres}
+        </h2>
         <h1>{game.name}</h1>
       </StyledCard>
     </Link>

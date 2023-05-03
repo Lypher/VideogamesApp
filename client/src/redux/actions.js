@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_ALLGAMES = "GET_ALLGAMES";
 export const GET_GENRES = "GET_GENRES";
 export const GET_GAMESBYNAME = "GET_GAMESBYNAME";
+export const UPDATE_LANGUAGE = "UPDATE_LANGUAGE";
 
 export const url = "http://localhost:3001";
 
@@ -37,3 +38,10 @@ export const getGenres = () => {
     });
   };
 };
+
+export const updateLanguage = (language) => ({
+  type: "UPDATE_LANGUAGE",
+  payload: {
+    language,
+  },
+});

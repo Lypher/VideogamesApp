@@ -1,18 +1,25 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { getAllGames, getGamesByName, getGenres } from "../../redux/actions.js";
+import {
+  getAllGames,
+  getGamesByName,
+  getGenres,
+  updateLanguage,
+} from "../../redux/actions.js";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [lang, setLang] = useState("en"); // Por defecto en inglés
+
+  const idioma = useSelector((state) => state.idioma); // Obtener el idioma global
 
   const toggleLang = (event) => {
-    setLang(event.target.value); // Establece el idioma seleccionado en el estado
+    dispatch(updateLanguage(event.target.value)); // Enviar la acción "updateLanguage"
   };
 
   useEffect(() => {
@@ -43,27 +50,27 @@ const NavBar = () => {
   return (
     <StyledNav style={{ display: location.pathname === "/" ? "none" : "flex" }}>
       <div>
-        <h1>{translations[lang].appTitle}</h1>
+        <h1>{translations[idioma].appTitle}</h1>
       </div>
       <div>
         <NavLink className="navLink" to="/home">
-          {translations[lang].home}
+          {translations[idioma].home}
         </NavLink>
       </div>
       <div>
         <NavLink className="navLink" to="/createForm">
-          {translations[lang].create}
+          {translations[idioma].create}
         </NavLink>
       </div>
       <div>
         <SearchBar
           onSearch={onSearch}
-          placeholder={translations[lang].searchBarPlaceholder}
+          placeholder={translations[idioma].searchBarPlaceholder}
         />{" "}
       </div>
       <div>
         🌐
-        <select value={lang} onChange={toggleLang}>
+        <select value={idioma} onChange={toggleLang}>
           <option value="en">English</option>
           <option value="es">Español</option>
         </select>

@@ -3,10 +3,30 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const Detail = () => {
   const { id } = useParams();
   const [gameDetail, setGameDetail] = useState({});
+  const idioma = useSelector((state) => state.idioma);
+
+  const translations = {
+    en: {
+      Name: "Name",
+      Release: "Release",
+      Genre: "Genre",
+      Rating: "Rating",
+      Platforms: "Platforms",
+    },
+    es: {
+      Name: "Nombre",
+      Release: "Lanzamiento",
+      Genre: "Genero",
+      Rating: "Puntuacion",
+      Platforms: "Plataformas",
+    },
+  };
+
   useEffect(() => {
     const getAxios = async () => {
       const detail = await axios(`http://localhost:3001/videogames/${id}`);
@@ -30,11 +50,14 @@ const Detail = () => {
             alt="Loading..."
           />
           <h2>
-            Genres: {gameDetail.genres.map((genre) => genre.name).join(", ")}
+            {translations[idioma].Genre}:{" "}
+            {gameDetail.genres.map((genre) => genre.name).join(", ")}
           </h2>
-          <h2>Rating: {gameDetail.rating}</h2>
           <h2>
-            Platforms:{" "}
+            {translations[idioma].Rating}: {gameDetail.rating}
+          </h2>
+          <h2>
+            {translations[idioma].Platforms}:{" "}
             {gameDetail.created === true
               ? gameDetail.platforms
               : gameDetail.platforms
@@ -42,7 +65,9 @@ const Detail = () => {
                   .join(", ")}
           </h2>
 
-          <h2>Released: {gameDetail.released}</h2>
+          <h2>
+            {translations[idioma].Release}: {gameDetail.released}
+          </h2>
           <article>{parser(gameDetail.description)}</article>
         </div>
       </StyledDetail>

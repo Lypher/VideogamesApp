@@ -19,6 +19,7 @@ const Cards = ({ games }) => {
   const [origin, setOrigin] = useState("");
   const [currentPage, setCurrentPage] = useState(page);
   const genres = useSelector((state) => state.genres);
+  const idioma = useSelector((state) => state.idioma); // Obtener el idioma global
 
   const handlePage = (event) => {
     setPage(event.target.value * 15);
@@ -50,23 +51,47 @@ const Cards = ({ games }) => {
   const handleFilterByGenre = (event) => {
     setGenre(event.target.value);
     page > 0 && setPage(0);
+    setCurrentPage(page);
   };
   const handleFilterByOrg = (event) => {
     setOrigin(event.target.value);
     page > 0 && setPage(0);
+    setCurrentPage(page);
   };
   const handleOrderAlf = (event) => {
     setOrderAlf(event.target.value);
     setOrderRtg("");
+    setPage(0);
+    setCurrentPage(page);
   };
   const handleOrderRtg = (event) => {
     setOrderRtg(event.target.value);
     setOrderAlf("");
+    setPage(0);
+    setCurrentPage(page);
+  };
+
+  const translations = {
+    en: {
+      SiteGames: "Site Games",
+      UsersGames: "Users Games",
+      AllGames: "All Games",
+      Raiting: "Raiting",
+    },
+    es: {
+      SiteGames: "Juegos Del Sitio",
+      UsersGames: "Juegos Del Usuario",
+      AllGames: "Todos los Juegos",
+      Raiting: "Puntuación",
+    },
   };
 
   if (genre !== "") {
     allGames = allGames.filter((game) => game.genres.includes(genre));
-    if (!allGames.length) message = "There are no games with that genre";
+    if (!allGames.length)
+      idioma === "en"
+        ? (message = "There are no games with that genre")
+        : (message = "No hay juegos con ese genero");
   }
 
   if (origin === "api") {
@@ -76,7 +101,10 @@ const Cards = ({ games }) => {
   if (origin === "db") {
     allGames = allGames.filter((game) => isNaN(game.id));
     if (!allGames.length)
-      message = "There are no games in database with that specification";
+      idioma === "en"
+        ? (message = "There are no games in database with that specification")
+        : (message =
+            "No hay juegos en la base de datos con esa especificacion");
   }
 
   if (origin === "all") {
@@ -127,16 +155,13 @@ const Cards = ({ games }) => {
       </div>
       <div className="filter">
         <button onClick={handleFilterByOrg} value="api">
-          {" "}
-          Site Games{" "}
+          {translations[idioma].SiteGames}
         </button>
         <button onClick={handleFilterByOrg} value="db">
-          {" "}
-          Users Games{" "}
+          {translations[idioma].UsersGames}
         </button>
         <button onClick={handleFilterByOrg} value="all">
-          {" "}
-          All Games{" "}
+          {translations[idioma].AllGames}
         </button>
         <button onClick={handleOrderAlf} value="A-Z">
           &uArr;&dArr; A-Z{" "}
@@ -145,10 +170,10 @@ const Cards = ({ games }) => {
           &uArr;&dArr; Z-A{" "}
         </button>
         <button onClick={handleOrderRtg} value="Ascending">
-          &uArr; Raiting{" "}
+          &uArr; {translations[idioma].Raiting}
         </button>
         <button onClick={handleOrderRtg} value="Descending">
-          &dArr; Raiting{" "}
+          &dArr; {translations[idioma].Raiting}
         </button>
       </div>
 

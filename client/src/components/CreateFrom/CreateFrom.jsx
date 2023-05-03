@@ -20,6 +20,26 @@ const CreateForm = () => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
+  const idioma = useSelector((state) => state.idioma);
+
+  const translations = {
+    en: {
+      Name: "Name",
+      Description: "Game description",
+      Release: "Release",
+      Image: "Image",
+      Rating: "Rating",
+      Platforms: "Platforms",
+    },
+    es: {
+      Name: "Nombre",
+      Description: "Descripcion del juego",
+      Release: "Lanzamiento",
+      Image: "Imagen",
+      Rating: "Puntuacion",
+      Platforms: "Plataformas",
+    },
+  };
 
   let allGenres = useSelector((state) => state.genres);
 
@@ -76,24 +96,27 @@ const CreateForm = () => {
     };
     !game.image.length && delete game.image;
     dispatch(getAllGames());
-    const newGame = await axios.post(`${url}/videogames`, game);
-    alert("Tu juego ha sido creado con exito!");
-    window.scrollTo(0, 0);
-    setGameData({
-      name: "",
-      description: "",
-      released: "",
-      image: "",
-      rating: "",
-      platforms: "",
-      genres: [],
-    });
-    return newGame;
+    if (!gameData.name.length) alert("necesitas llenar el formulario");
+    else {
+      const newGame = await axios.post(`${url}/videogames`, game);
+      alert("Tu juego ha sido creado con exito!");
+      window.scrollTo(0, 0);
+      setGameData({
+        name: "",
+        description: "",
+        released: "",
+        image: "",
+        rating: "",
+        platforms: "",
+        genres: [],
+      });
+      return newGame;
+    }
   };
   return (
     <StyledForm>
       <div>
-        <label htmlFor="name">Name: </label>
+        <label htmlFor="name">{translations[idioma].Name} </label>
         <input
           type="text"
           name="name"
@@ -103,7 +126,7 @@ const CreateForm = () => {
         {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
       </div>
       <div>
-        <label htmlFor="background_image">Image: </label>
+        <label htmlFor="background_image">{translations[idioma].Image}: </label>
         <input
           type="text"
           name="image"
@@ -114,7 +137,7 @@ const CreateForm = () => {
       </div>
 
       <div>
-        <label htmlFor="rating">Rating: </label>
+        <label htmlFor="rating">{translations[idioma].Rating}: </label>
         <input
           type="text"
           name="rating"
@@ -125,7 +148,7 @@ const CreateForm = () => {
       </div>
 
       <div>
-        <label htmlFor="platforms">Platforms: </label>
+        <label htmlFor="platforms">{translations[idioma].Platforms}: </label>
         <input
           type="text"
           name="platforms"
@@ -136,7 +159,7 @@ const CreateForm = () => {
       </div>
 
       <div>
-        <label htmlFor="released">Release: </label>
+        <label htmlFor="released">{translations[idioma].Release}: </label>
         <input
           type="date"
           name="released"
@@ -152,7 +175,7 @@ const CreateForm = () => {
           cols="50"
           value={gameData.description}
           onChange={handleInputChange}
-          placeholder="Game description"
+          placeholder={translations[idioma].Description}
         />
         {errors.description && (
           <p style={{ color: "red" }}>{errors.description}</p>
@@ -171,12 +194,7 @@ const CreateForm = () => {
         {errors.genres && <p style={{ color: "red" }}>{errors.genres}</p>}
       </div>
 
-      <button
-        className="submit"
-        type="submit"
-        disabled={Object.keys(errors).length ? true : false}
-        onClick={handleSubmit}
-      >
+      <button className="submit" type="submit" onClick={handleSubmit}>
         Submit
       </button>
     </StyledForm>
