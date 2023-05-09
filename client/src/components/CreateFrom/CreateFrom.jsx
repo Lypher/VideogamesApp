@@ -228,12 +228,14 @@ const StyledForm = styled.div`
     justify-content: center;
     gap: 5px;
   }
+
   .genres button {
     font-size: 17px;
     color: #5d0279;
     border-radius: 7px;
     border: 3px solid #740496;
   }
+
   .submit {
     font-size: 25px;
     color: white;

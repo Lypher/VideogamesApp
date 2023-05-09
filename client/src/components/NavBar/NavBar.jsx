@@ -5,7 +5,7 @@ import {
   getGenres,
   updateLanguage,
 } from "../../redux/actions.js";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import styled from "styled-components";
@@ -16,10 +16,10 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const idioma = useSelector((state) => state.idioma); // Obtener el idioma global
+  const idioma = useSelector((state) => state.idioma);
 
   const toggleLang = (event) => {
-    dispatch(updateLanguage(event.target.value)); // Enviar la acción "updateLanguage"
+    dispatch(updateLanguage(event.target.value));
   };
 
   useEffect(() => {
